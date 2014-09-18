@@ -34,12 +34,20 @@ class Board
 
   def move(start_pos, end_pos)
     unless self[start_pos].nil?
+
       self[start_pos].move(end_pos)
     else
       puts "starting square have no piece"
     end
+  end
 
-    self.render
+  def perform_moves(start_pos, move_sequence)
+    unless self[start_pos].nil?
+
+      self[start_pos].perform_moves(move_sequence)
+    else
+      puts "starting square have no piece"
+    end
   end
 
   def add_piece(piece, pos)
@@ -105,19 +113,19 @@ class Board
     fill_rows(:white)
 
 
-    Piece.new(:white, self, [5, 5])
-    Piece.new(:white, self, [5, 3])
-    Piece.new(:black, self, [7, 0])
-
-    Piece.new(:white, self, [3, 1])
-    Piece.new(:white, self, [5, 1])
-
-    self[[6,2]] = nil
-
-    self[[0, 0]] = self[[7, 0]]
-    self[[0, 0]].pos = [0, 0]
-    self[[7, 0]] = nil
-    self[[0, 0]].promote
+    # Piece.new(:white, self, [5, 5])
+    # Piece.new(:white, self, [5, 3])
+    # Piece.new(:black, self, [7, 0])
+    #
+    # Piece.new(:white, self, [3, 1])
+    # Piece.new(:white, self, [5, 1])
+    #
+    # self[[6,2]] = nil
+    #
+    # self[[0, 0]] = self[[7, 0]]
+    # self[[0, 0]].pos = [0, 0]
+    # self[[7, 0]] = nil
+    # self[[0, 0]].promote
   end
 
   def fill_rows(color)
@@ -140,17 +148,26 @@ end
 
 
 if __FILE__ == $PROGRAM_NAME
-  b = Board.new(8)
-
-  # b.render
-
-
-good = [[2,2], [4,0], [6,2]]
-bad = [[2,2], [4,0], [5,1]]
-puts "good sequence"
-b[[0,0]].valid_move_seq?(good)
-b.render
-b[[0,0]].valid_move_seq?(bad)
+#   b = Board.new(8)
+#
+#   # b.render
+#
+#
+# good = [[2,2], [4,0], [6,2], [2,6]]
+# bad = [[2,2], [4,0], [5,1]]
+# puts "good sequence"
+#
+# b[[0,0]].valid_move_seq?(good)
+#
+#
+# puts "bad sequence"
+# bad
+# puts b[[0,0]].valid_move_seq?(bad)
+#
+# puts "actually moving"
+# b.perform_moves([0,0],good)
+#
+# b.render
 end
 
   # puts "can only move diagonal not forward"

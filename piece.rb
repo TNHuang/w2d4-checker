@@ -22,11 +22,48 @@ class Piece
     self.promote
   end
 
+  def perform_moves(move_sequence)
+
+    return "illegal sequence" unless valid_move_seq?(move_sequence)
+    move_sequence.each do |sub_pos|
+      move(sub_pos)
+    end
+
+  end
+
+  def combo_move(move_sequence)
+  end
+
   def valid_move?(end_pos)
     return false if board.out_of_bound?(end_pos)
     return false unless is_move_diagonal?(end_pos)
     return false unless delta.include?(dir(end_pos))
     return false unless can_jump?(end_pos) || can_slide?(end_pos)
+    true
+  end
+
+  def valid_move_seq?(move_sequence)
+    root_pos = pos
+    f = board.dup
+
+    if move_sequence.length == 1
+
+      return f[root_pos].valid_move?(move_sequence[0])
+    elsif move_sequence.length > 1
+
+      move_sequence.each do |current_pos|
+        current_piece = f[root_pos]
+
+        return false if current_piece.board.out_of_bound?(current_pos)
+        return false unless current_piece.is_move_diagonal?(current_pos)
+        return false unless current_piece.delta.include?(current_piece.dir(current_pos))
+        return false unless current_piece.can_jump?(current_pos)
+
+        f.move(root_pos,current_pos)
+        root_pos = [current_pos[0], current_pos[1]]
+      end
+    end
+
     true
   end
 
@@ -51,30 +88,6 @@ class Piece
 
   def dydx(end_pos)
     [end_pos[0] - pos[0], end_pos[1]- pos[1]]
-  end
-
-  def valid_move_seq?(move_sequence)
-    root_pos = pos
-    f = board.dup
-
-    if move_sequence.length == 1
-      return f[root_pos].valid_move?(move_sequence[0])
-    elsif move_sequence.length > 1
-
-      move_sequence.each do |current_pos|
-        current_piece = f[root_pos]
-
-        return false if current_piece.board.out_of_bound?(current_pos)
-        return false unless current_piece.is_move_diagonal?(current_pos)
-        return false unless current_piece.delta.include?(current_piece.dir(current_pos))
-        return false unless current_piece.can_jump?(current_pos)
-
-        f.move(root_pos,current_pos)
-        root_pos = [current_pos[0], current_pos[1]]
-      end
-    end
-
-    true
   end
 
   #write about super jump--------------------
@@ -149,11 +162,4 @@ class Piece
 
 end
 
-# def perform_moves!(move_sequence)
-#   raise "invalid move sequence" unless valid_move_seq?(move_sequence)
-#   move_sequence.each do |current_pos|
-#     move(current_pos)
-#   end
-#
-# end
 
