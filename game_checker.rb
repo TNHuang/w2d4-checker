@@ -21,9 +21,11 @@ class Game
       puts "It's #{current_turn} player\'s turn"
       board.render
       make_move(current_turn)
-      break if board.grid.flatten.compact.count == 1
-    end
 
+      break if board.grid.flatten.compact.count == 1
+
+    end
+    board.render
     puts "#{current_turn} player won!"
   end
 
@@ -51,11 +53,6 @@ class Game
        puts "it's not your turn yet!"
        retry
     end
-
-    p board.all_enemy_moves_empty?(current_color)
-    p board.all_enemy_pieces(current_color).count
-    p board.all_my_pieces(current_color).count
-    p board.grid.flatten.compact.count
 
     board.perform_moves(start_pos, move_sequence) unless move_sequence.empty?
     if board.grid.flatten.compact.count == 1 || board.all_enemy_moves_empty?(current_color) || board.all_enemy_pieces(current_color).empty?

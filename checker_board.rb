@@ -77,7 +77,7 @@ class Board
     new_board = Board.new
     pieces = self.grid.flatten.compact
     pieces.each do |piece|
-      Piece.new(piece.color, new_board, piece.pos)
+      Piece.new(piece.color, new_board, piece.pos.dup)
     end
     board_size.times do |y|
       board_size.times do |x|
@@ -110,11 +110,11 @@ class Board
   protected
 
   def populate_board
-    # fill_rows(:black)
-   #  fill_rows(:white)
-    Piece.new(:white, self, [6,6])
-    Piece.new(:black, self, [7,7])
-    self[[7,7]].is_king = true
+    fill_rows(:black)
+    fill_rows(:white)
+    # Piece.new(:white, self, [6,6])
+    # Piece.new(:black, self, [7,7])
+    # self[[7,7]].is_king = true
   end
 
   def fill_rows(color)
