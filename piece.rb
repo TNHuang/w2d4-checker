@@ -81,6 +81,7 @@ class Piece
   end
 
   def perform_jump(end_pos)
+    puts "I jump"
     path = get_path(end_pos)
     path.each {|sub_pos| board[sub_pos] = nil}
     board[end_pos], board[self.pos], self.pos = self, nil, end_pos
@@ -158,6 +159,11 @@ class Piece
     else
       [ [board_dir,1], [board_dir, -1] ]
     end
+  end
+
+  def all_possible_moves
+    all_coords = (0...board.grid.length).to_a.repeated_permutation(2).to_a
+    all_coords.select {|coord| valid_move?(coord)}
   end
 
 end

@@ -65,14 +65,6 @@ class Board
       row = row.map.with_index do |ele, j|
         ele.nil? ? " " : ele.render
 
-        #secret code to mark all the black
-        # if arr.include?([i,j])
-       #    ele.nil? ? "X" : "K"
-       #  elsif ele.nil?
-       #    " "
-       #  else
-       #    ele.name
-       #  end
       end.join(' | ')
 
       puts "#{i} | #{row} | #{i}"
@@ -98,34 +90,31 @@ class Board
     new_board
   end
 
-  # def deep_dup(array)
-  #   new_array = []
-  #   array.each do |el|
-  #     new_array << (el.is_a?(Array) ? deep_dup(el) : (el.nil? ? nil : el.dup))
-  #   end
-  #   new_array
-  # end
+  def all_enemy_pieces(color)
+    grid.flatten.compact.select { |piece| piece.color != color }
+  end
+
+  def all_my_pieces(color)
+    grid.flatten.compact.select { |piece| piece.color == color }
+  end
+
+
+  def all_enemy_moves(color)
+    all_move = all_enemy_pieces(color).map { |piece| piece.all_possible_moves }
+  end
+
+  def all_enemy_moves_empty?(color)
+    all_enemy_moves(color).empty?
+  end
 
   protected
 
   def populate_board
-    fill_rows(:black)
-    fill_rows(:white)
-
-
-    # Piece.new(:white, self, [5, 5])
-    # Piece.new(:white, self, [5, 3])
-    # Piece.new(:black, self, [7, 0])
-    #
-    # Piece.new(:white, self, [3, 1])
-    # Piece.new(:white, self, [5, 1])
-    #
-    # self[[6,2]] = nil
-    #
-    # self[[0, 0]] = self[[7, 0]]
-    # self[[0, 0]].pos = [0, 0]
-    # self[[7, 0]] = nil
-    # self[[0, 0]].promote
+    # fill_rows(:black)
+   #  fill_rows(:white)
+    Piece.new(:white, self, [6,6])
+    Piece.new(:black, self, [7,7])
+    self[[7,7]].is_king = true
   end
 
   def fill_rows(color)
@@ -168,6 +157,19 @@ if __FILE__ == $PROGRAM_NAME
 # b.perform_moves([0,0],good)
 #
 # b.render
+# Piece.new(:white, self, [5, 5])
+# Piece.new(:white, self, [5, 3])
+# Piece.new(:black, self, [7, 0])
+#
+# Piece.new(:white, self, [3, 1])
+# Piece.new(:white, self, [5, 1])
+#
+# self[[6,2]] = nil
+#
+# self[[0, 0]] = self[[7, 0]]
+# self[[0, 0]].pos = [0, 0]
+# self[[7, 0]] = nil
+# self[[0, 0]].promote
 end
 
   # puts "can only move diagonal not forward"
